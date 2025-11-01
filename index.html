@@ -29,26 +29,29 @@
 
   <style>
     body {
-      scroll-snap-type: y mandatory;
-      overflow-y: scroll;
+      /* scroll-snap desactivado para evitar que solo se vea el centro al hacer scroll */
+      scroll-snap-type: none;
+      overflow-y: auto;
       background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     }
     section {
-      scroll-snap-align: start;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 5rem 0;
+      /* scroll-snap-align desactivado */
+      scroll-snap-align: none;
+      min-height: auto;
+      display: block;
+      align-items: stretch;
+      padding: 3rem 0;
       position: relative;
     }
     .animate-content {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.9s cubic-bezier(0.17, 0.84, 0.44, 1.0);
+      /* Animación de aparición desactivada para que todo el contenido sea visible siempre */
+      opacity: 1;
+      transform: none;
+      transition: none;
     }
     .animate-content.is-visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: none;
     }
     .typewriter-cursor {
       display: inline-block;
@@ -147,60 +150,226 @@
       }
     }
     
+    /* Fondo hero con imagen espectacular */
+    .hero-bg {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.35) 0%, rgba(16, 185, 129, 0.25) 50%, rgba(245, 158, 11, 0.30) 100%),
+                  url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi2X0vNSe_WSGIWeab_jgLnnfLxjK5cg8xc4JqaLGMlKoClzowbaZPDxMzAZUA0ZdbTcqXGyKBBZdF3Ugy9KRm9gc5HCrmIBvSFWWp_wu6X5TbNxqlSlSuxVX5YwLuMfyOAC0RsrvClcZZk/s1600/foto-recreacion.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.06) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(255,255,255,0.05) 0%, transparent 50%);
+      animation: heroShimmer 8s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes heroShimmer {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.35; }
+    }
+
+    /* Capa de oscurecimiento para mejorar la legibilidad del texto */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Asegura que el contenido quede por encima de las capas */
+    .hero-bg > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Refuerza la legibilidad del texto del hero */
+    .hero-bg h1,
+    .hero-bg h2,
+    .hero-bg h3,
+    .hero-bg p,
+    .hero-bg small {
+      color: #ffffff;
+      text-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.35);
+    }
+    
+    /* Estilos para image-slot y visual-image */
+    .image-slot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .image-slot {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border: 2px dashed #cbd5e1;
+      border-radius: 1rem;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: #64748b;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .image-slot:hover {
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+    }
+    .visual-image {
+      width: 100%;
+      height: auto;
+      max-width: 300px;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+    .visual-image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
     /* Estilos para las tarjetas del marco teórico */
     .theory-card {
-      background: linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 100%);
-      border: 2px solid #a0d496;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 20px;
-      padding: 2rem 1.5rem;
+      padding: 2rem;
       text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      opacity: 1;
+      transform: none;
     }
+
+    .theory-card.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .theory-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .theory-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .theory-card:hover::before {
+      left: 100%;
+    }
+
+    .theory-card:hover::after {
+      opacity: 1;
+    }
+
     .theory-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
     }
-    .theory-icon {
-      width: 60px;
-      height: 60px;
-      background: #478b85;
+
+    .theory-badge {
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       margin: 0 auto 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(15px);
+      border: 3px solid rgba(255,255,255,0.4);
+      transition: all 0.3s ease;
       position: relative;
+      overflow: hidden;
     }
-    .theory-icon::before {
+
+    .theory-badge::before {
       content: '';
       position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-bottom: 20px solid #477b8b;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
     }
-    .theory-icon svg {
-      width: 28px;
-      height: 28px;
+
+    .theory-card:hover .theory-badge::before {
+      transform: translateX(100%);
     }
+
+    .theory-badge img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .theory-card:hover .theory-badge img {
+      transform: scale(1.1);
+    }
+
     .theory-title {
-      font-size: 1.25rem;
+      font-size: 1.6rem;
       font-weight: bold;
-      color: #375b5d;
-      margin-bottom: 1rem;
-      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
+
+    .theory-subtitle {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
     .theory-content {
-      color: #47536b;
-      line-height: 1.6;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.7;
       font-size: 0.95rem;
+      text-align: justify;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -254,48 +423,16 @@
   <main class="w-full">
 
     <!-- INICIO -->
-    <section id="inicio" class="bg-primario text-white text-center sport-bg-pattern">
-      <!-- Iconos deportivos flotantes -->
-      <div class="floating-sport-icon" style="top: 15%; left: 10%; animation-delay: 0s;">
-        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="45" fill="white" opacity="0.1"/>
-          <path d="M50 10 L60 30 L80 30 L65 45 L70 65 L50 55 L30 65 L35 45 L20 30 L40 30 Z" fill="white" opacity="0.2"/>
-        </svg>
-      </div>
-      <div class="floating-sport-icon" style="top: 20%; right: 15%; animation-delay: 2s;">
-        <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="40" fill="white" opacity="0.1"/>
-          <circle cx="50" cy="50" r="35" stroke="white" stroke-width="2" opacity="0.2" fill="none"/>
-          <path d="M30 50 Q50 30 70 50 Q50 70 30 50" fill="white" opacity="0.15"/>
-        </svg>
-      </div>
-      <div class="floating-sport-icon" style="bottom: 25%; left: 20%; animation-delay: 4s;">
-        <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="40" width="60" height="20" rx="10" fill="white" opacity="0.1"/>
-          <circle cx="30" cy="50" r="8" fill="white" opacity="0.2"/>
-          <circle cx="70" cy="50" r="8" fill="white" opacity="0.2"/>
-        </svg>
-      </div>
+    <section id="inicio" class="hero-bg text-white text-center">
       
       <div class="container mx-auto px-6 max-w-4xl relative z-10">
         <div class="p-12 md:p-10 rounded-3xl">
-          <!-- Imagen deportiva principal -->
-          <div class="mb-6 flex justify-center">
-            <svg class="sport-visual sport-visual--small" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g transform="translate(100,100)">
-                <!-- Figura corriendo -->
-                <circle cx="0" cy="-40" r="15" fill="white" opacity="0.8"/>
-                <rect x="-8" y="-25" width="16" height="30" rx="8" fill="white" opacity="0.8"/>
-                <rect x="-12" y="-15" width="8" height="20" rx="4" fill="white" opacity="0.7" transform="rotate(-20)"/>
-                <rect x="4" y="-15" width="8" height="20" rx="4" fill="white" opacity="0.7" transform="rotate(30)"/>
-                <rect x="-6" y="5" width="8" height="25" rx="4" fill="white" opacity="0.8" transform="rotate(-15)"/>
-                <rect x="2" y="5" width="8" height="25" rx="4" fill="white" opacity="0.8" transform="rotate(20)"/>
-              </g>
-              <!-- Líneas de movimiento -->
-              <path d="M40 100 Q60 90 80 100" stroke="white" stroke-width="2" opacity="0.4" fill="none"/>
-              <path d="M45 110 Q65 100 85 110" stroke="white" stroke-width="2" opacity="0.3" fill="none"/>
-            </svg>
-          </div>
+          <!-- Espacio para galería inicial (opcional) -->
+          <!-- <div class="image-slot-grid mb-6">
+            <div class="image-slot">Imagen aquí</div>
+            <div class="image-slot">Imagen aquí</div>
+            <div class="image-slot">Imagen aquí</div>
+          </div> -->
           
           <p class="text-2xl font-light mb-2 text-acento">PROYECTO DE INVESTIGACIÓN</p>
           <h1 id="typewriter-text" class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight min-h-[140px] md:min-h-[160px]"></h1>
@@ -323,38 +460,15 @@
             </p>
           </div>
           <div class="md:col-span-1 flex items-center justify-center">
-            <!-- Imagen deportiva SVG elaborada (fuera del contenedor decorativo) -->
-            <svg class="sport-visual" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Cancha de fútbol -->
-              <rect x="50" y="100" width="200" height="120" rx="10" fill="#10B981" opacity="0.2" stroke="#059669" stroke-width="2"/>
-              <circle cx="150" cy="160" r="30" fill="none" stroke="#059669" stroke-width="2" opacity="0.6"/>
-              <line x1="150" y1="100" x2="150" y2="220" stroke="#059669" stroke-width="2" opacity="0.4"/>
-              
-              <!-- Jugadores -->
-              <g transform="translate(120,140)">
-                <circle cx="0" cy="0" r="8" fill="#3B82F6"/>
-                <rect x="-4" y="8" width="8" height="15" rx="4" fill="#3B82F6"/>
-                <rect x="-6" y="23" width="5" height="12" rx="2" fill="#3B82F6"/>
-                <rect x="1" y="23" width="5" height="12" rx="2" fill="#3B82F6"/>
-              </g>
-              
-              <g transform="translate(180,180)">
-                <circle cx="0" cy="0" r="8" fill="#EF4444"/>
-                <rect x="-4" y="8" width="8" height="15" rx="4" fill="#EF4444"/>
-                <rect x="-6" y="23" width="5" height="12" rx="2" fill="#EF4444"/>
-                <rect x="1" y="23" width="5" height="12" rx="2" fill="#EF4444"/>
-              </g>
-              
-              <!-- Pelota -->
-              <circle cx="160" cy="170" r="6" fill="#F59E0B" stroke="#D97706" stroke-width="1"/>
-              <path d="M156 170 Q160 166 164 170 Q160 174 156 170" fill="#D97706"/>
-              
-              <!-- Elementos decorativos -->
-              <circle cx="80" cy="130" r="3" fill="#10B981" opacity="0.6"/>
-              <circle cx="220" cy="190" r="3" fill="#10B981" opacity="0.6"/>
-              <path d="M70 200 Q90 195 110 200" stroke="#059669" stroke-width="2" opacity="0.3" fill="none"/>
-            </svg>
+            <!-- Espacio para imagen -->
+            <img class="visual-image" src="https://lazosdelagente.com/wp-content/uploads/2023/05/Importancia-de-la-recreacio%CC%81n-en-los-nin%CC%83os.png" alt="Imagen del tema (recreación)"/>
           </div>
+        </div>
+        <!-- Más lugares para imágenes del Tema -->
+        <div class="image-slot-grid mt-6">
+          <div class="image-slot"><span><img src="https://www.clinicalascondes.cl/getattachment/ae760e8a-eb41-4e74-a12f-a79a05a405bb/?image.jpg" alt=""></span></div>
+          <div class="image-slot"><span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQts3gm5ygkcNTZ0Y6gnqeFMD8uEjNJpOocLpU_lppkZSGHFulsmZS0RoLfNIfaV2Y66WU&usqp=CAU" alt=""></span></div>
+          <div class="image-slot"><span><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSz6OyYYDcLNrGQHvY6hIhostrI5c7zH4-N4FtAU58MtgP-VDGLZL2ju59H_-fah9cEmS6-n7UfD-NMDNSUtAedK6wUDVNvlwpV5wTLbqnpeMRLZtADnBgOIAgGrhxt0aSlgXrNJe7ZEY/s1600/IMG_2706+%255B800x600%255D.JPG" alt=""></span></div>
         </div>
       </div>
     </section>
@@ -373,20 +487,14 @@
             </p>
           </div>
           <div class="lg:col-span-1 flex items-center justify-center">
-            <svg class="sport-visual" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Estudiante estresado -->
-              <circle cx="100" cy="80" r="25" fill="#EF4444" opacity="0.7"/>
-              <rect x="85" y="105" width="30" height="40" rx="15" fill="#6B7280"/>
-              <rect x="75" y="115" width="15" height="25" rx="7" fill="#6B7280"/>
-              <rect x="110" y="115" width="15" height="25" rx="7" fill="#6B7280"/>
-              <!-- Líneas de estrés -->
-              <path d="M70 70 L80 60 M130 70 L120 60 M100 50 L100 40" stroke="#EF4444" stroke-width="3" opacity="0.8"/>
-              <!-- Libros pesados -->
-              <rect x="60" y="160" width="80" height="8" rx="4" fill="#3B82F6"/>
-              <rect x="65" y="152" width="70" height="8" rx="4" fill="#10B981"/>
-              <rect x="70" y="144" width="60" height="8" rx="4" fill="#F59E0B"/>
-            </svg>
+            <img class="visual-image" src="https://i.pinimg.com/474x/44/86/47/4486474abecb548adaf59308a6f94447.jpg" alt="Imagen del problema"/>
           </div>
+        </div>
+        <!-- Espacios para imágenes adicionales del Problema -->
+        <div class="image-slot-grid mt-6">
+          <div class="image-slot"><img src="https://i.pinimg.com/736x/d2/c3/79/d2c3793c523d1037d7d546d721e73818.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://static.vecteezy.com/system/resources/previews/014/350/716/non_2x/businessman-problem-solving-icon-cartoon-style-vector.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5T_gR-tu5rvviYkqV5t7Wie6RDXQOfkzgXaiXIODVgQ8AWngCHj-4I8UpBlxcJmT8JmQ&usqp=CAU" alt=""></div>
         </div>
       </div>
     </section>
@@ -399,51 +507,40 @@
         <!-- Tarjetas de teorías -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <!-- Howard Gardner -->
-          <div class="theory-card">
-            <div class="theory-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 14c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-              </svg>
-            </div>
+          <div class="theory-card animate-content" style="animation-delay: 0.2s;">
+            <div class="theory-badge"><img src="https://encuentromundialdevalores.org/wp-content/uploads/2023/06/HOWARD-GARDNER.jpeg" alt="Howard Gardner"></div>
             <h3 class="theory-title">Howard Gardner</h3>
+            <h4 class="theory-subtitle">Teoría de las Inteligencias Múltiples</h4>
             <p class="theory-content">
-              Explica que el aprendizaje se potencia no solo desde lo académico, sino también a través de actividades lúdicas y recreativas que estimulan diferentes inteligencias.
+              Gardner revolucionó la educación al demostrar que existen múltiples formas de inteligencia. Su investigación revela que las actividades recreativas y lúdicas no son meras distracciones, sino catalizadores fundamentales que despiertan y nutren diferentes tipos de inteligencia: kinestésica, musical, interpersonal y espacial. En el contexto escolar, la recreación se convierte en un laboratorio viviente donde cada estudiante puede descubrir y desarrollar sus talentos únicos.
             </p>
           </div>
 
           <!-- Jean Piaget -->
-          <div class="theory-card">
-            <div class="theory-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="9" cy="7" r="2" stroke="currentColor" stroke-width="2"/>
-                <circle cx="15" cy="7" r="2" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
-                <path d="M9 9c0 2 1.5 3 3 3s3-1 3-3" stroke="currentColor" stroke-width="2" fill="none"/>
-                <path d="M7 17c1-2 2-3 5-3s4 1 5 3" stroke="currentColor" stroke-width="2" fill="none"/>
-              </svg>
-            </div>
+          <div class="theory-card animate-content" style="animation-delay: 0.4s;">
+            <div class="theory-badge"><img src="https://nifplay.org/wp-content/uploads/2021/11/jean-piaget-color-183x275-1.jpg" alt="Jean Piaget"></div>
             <h3 class="theory-title">Jean Piaget</h3>
+            <h4 class="theory-subtitle">Desarrollo Cognitivo a través del Juego</h4>
             <p class="theory-content">
-              El juego permite a los niños explorar, socializar, aprender normas y desarrollar habilidades cognitivas.
+              Piaget identificó el juego como el arquitecto silencioso del desarrollo cognitivo. A través de sus estudios, demostró que cuando los niños juegan, no solo se divierten: construyen esquemas mentales, desarrollan el pensamiento simbólico y aprenden a navegar las complejidades sociales. La recreación escolar, vista desde esta perspectiva, se transforma en un espacio sagrado donde la mente infantil experimenta, asimila y acomoda nuevos conocimientos de manera orgánica y natural.
             </p>
           </div>
 
           <!-- OMS 2021 -->
-          <div class="theory-card">
-            <div class="theory-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 12h18m-9-9v18" stroke="currentColor" stroke-width="2"/>
-                <path d="M8 8l8 8m0-8l-8 8" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-              </svg>
-            </div>
+          <div class="theory-card animate-content" style="animation-delay: 0.6s;">
+            <div class="theory-badge"><img src="https://www.cgtrabajosocial.es/files/64ef65709cf85/thumb.large.noticias_1409_1611572772.jpg" alt="OMS 2021"></div>
             <h3 class="theory-title">OMS, 2021</h3>
+            <h4 class="theory-subtitle">Bienestar Integral y Salud Mental</h4>
             <p class="theory-content">
-              La recreación es un componente clave para garantizar el bienestar físico y mental de los estudiantes.
+              La Organización Mundial de la Salud ha establecido un paradigma claro: la actividad física y recreativa no es un lujo, sino una necesidad fundamental para el desarrollo humano integral. Sus directrices enfatizan que la recreación escolar actúa como un poderoso antídoto contra el estrés académico, fortalece la resiliencia emocional y crea las bases para hábitos saludables que perdurarán toda la vida. En el ecosistema educativo, esto se traduce en estudiantes más equilibrados, concentrados y motivados.
             </p>
           </div>
+        </div>
+        <!-- Lugares extra para imágenes del Marco Teórico -->
+        <div class="image-slot-grid mb-8">
+          <div class="image-slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmmyg56cxZ87sMh9mRk2VLO0xsHlasgMRn7Q&s" alt=""></div>
+          <div class="image-slot"><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/IMAGEN_DE_JEAN_PIAGET.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://www.cgtrabajosocial.es/files/64ef65709cf85/thumb.large.noticias_1409_1611572772.jpg" alt=""></div>
         </div>
       </div>
     </section>
@@ -459,23 +556,13 @@
             </p>
           </div>
           <div class="lg:col-span-1 flex items-center justify-center">
-            <svg class="sport-visual" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Balanza equilibrada -->
-              <rect x="90" y="50" width="20" height="80" rx="10" fill="#6B7280"/>
-              <circle cx="100" cy="50" r="8" fill="#3B82F6"/>
-              <!-- Lado izquierdo: Estudio -->
-              <rect x="40" y="90" width="40" height="6" rx="3" fill="#F59E0B"/>
-              <rect x="45" y="80" width="30" height="10" rx="5" fill="#3B82F6"/>
-              <text x="60" y="105" text-anchor="middle" fill="#1F2937" font-size="8">📚</text>
-              <!-- Lado derecho: Deporte -->
-              <rect x="120" y="90" width="40" height="6" rx="3" fill="#F59E0B"/>
-              <circle cx="140" cy="85" r="8" fill="#10B981"/>
-              <text x="140" y="105" text-anchor="middle" fill="#1F2937" font-size="8">⚽</text>
-              <!-- Líneas de conexión -->
-              <line x1="80" y1="93" x2="40" y2="93" stroke="#6B7280" stroke-width="2"/>
-              <line x1="120" y1="93" x2="160" y2="93" stroke="#6B7280" stroke-width="2"/>
-            </svg>
+            <img class="visual-image" src="https://investigacioncientifica.org/wp-content/uploads/2020/05/justificacion-de-un-proyecto.jpg" alt="Imagen de justificación"/>
           </div>
+        </div>
+        <div class="image-slot-grid mt-6">
+          <div class="image-slot"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiE2KxsNUjrcHJ-9g0_mhCJUNPDoqrQbrrVk4vChJn88reEkDhUQJ3TW5Cu4WYeZrW-FkgJQJDfa5q3gjjMpt8CaBH1lOfHm6eLP9pBd_TtkuCKkPaIu4B0H1c15rTmGzU-NYsxf5MvbnU0/s250/digital_media.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://s1.significados.com/foto/justificacion-de-un-proyecto-og.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://proyectoseducativoscr.wordpress.com/wp-content/uploads/2014/10/justificacion.jpg" alt=""></div>
         </div>
       </div>
     </section>
@@ -486,28 +573,18 @@
         <h2 class="text-3xl font-extrabold text-primario mb-8 border-b-4 border-secundario pb-2 sport-margin">5. Hipótesis 💭</h2>
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div class="lg:col-span-1 flex items-center justify-center">
-            <svg class="sport-visual" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Gráfico de mejora -->
-              <rect x="40" y="40" width="120" height="120" fill="none" stroke="#6B7280" stroke-width="2" rx="10"/>
-              <!-- Línea ascendente -->
-              <path d="M50 140 L80 110 L110 80 L140 50" stroke="#10B981" stroke-width="4" fill="none"/>
-              <!-- Puntos de datos -->
-              <circle cx="50" cy="140" r="4" fill="#10B981"/>
-              <circle cx="80" cy="110" r="4" fill="#10B981"/>
-              <circle cx="110" cy="80" r="4" fill="#10B981"/>
-              <circle cx="140" cy="50" r="4" fill="#10B981"/>
-              <!-- Etiquetas -->
-              <text x="30" y="145" fill="#6B7280" font-size="10">Bajo</text>
-              <text x="30" y="55" fill="#6B7280" font-size="10">Alto</text>
-              <text x="45" y="175" fill="#6B7280" font-size="8">Sin recreación</text>
-              <text x="120" y="175" fill="#6B7280" font-size="8">Con recreación</text>
-            </svg>
+            <img class="visual-image" src="https://static.wixstatic.com/media/15045b_1d6d3134956d447981a7d0c9fbcefb17~mv2.jpg/v1/fill/w_450,h_540,al_c,lg_1,q_80/15045b_1d6d3134956d447981a7d0c9fbcefb17~mv2.jpg" alt="Imagen de hipótesis" />
           </div>
           <div class="lg:col-span-3 bg-white p-8 rounded-2xl shadow-xl section-box">
             <p class="text-lg leading-relaxed">
               Si se implementan espacios de recreación frecuentes y bien estructurados en las instituciones educativas, los estudiantes tendrán un mejor desempeño académico, mayor motivación y mejor convivencia escolar.
             </p>
           </div>
+        </div>
+        <div class="image-slot-grid mt-6">
+          <div class="image-slot"><img src="https://img.freepik.com/fotos-premium/concepto-crecimiento-empresarial-grafico-alusivo-que-muestra-beneficios-ventas-marketing_31965-42241.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://static.vecteezy.com/system/resources/previews/019/576/575/non_2x/bar-chart-with-uptrend-arrow-show-growth-of-business-performance-and-profit-of-investment-on-blue-background-vector.jpg" alt=""></div>
+          <div class="image-slot"><img src="https://png.pngtree.com/thumb_back/fh260/background/20220915/pngtree-a-businessman-sketches-an-allusive-graph-chart-to-illustrate-the-growth-in-business-profits-photo-image_48361742.jpg" alt=""></div>
         </div>
       </div>
     </section>
@@ -525,31 +602,13 @@
             </ul>
           </div>
           <div class="lg:col-span-1 flex items-center justify-center">
-            <svg class="sport-visual" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Proceso de investigación -->
-              <circle cx="100" cy="50" r="20" fill="#3B82F6" opacity="0.7"/>
-              <text x="100" y="55" text-anchor="middle" fill="white" font-size="12" font-weight="bold">1</text>
-              <text x="100" y="75" text-anchor="middle" fill="#1F2937" font-size="8">Encuestas</text>
-              
-              <circle cx="60" cy="120" r="20" fill="#10B981" opacity="0.7"/>
-              <text x="60" y="125" text-anchor="middle" fill="white" font-size="12" font-weight="bold">2</text>
-              <text x="60" y="145" text-anchor="middle" fill="#1F2937" font-size="8">Análisis</text>
-              
-              <circle cx="140" cy="120" r="20" fill="#F59E0B" opacity="0.7"/>
-              <text x="140" y="125" text-anchor="middle" fill="white" font-size="12" font-weight="bold">3</text>
-              <text x="140" y="145" text-anchor="middle" fill="#1F2937" font-size="8">Entrevistas</text>
-              
-              <!-- Flechas conectoras -->
-              <path d="M85 65 L75 105" stroke="#6B7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-              <path d="M115 65 L125 105" stroke="#6B7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-              
-              <defs>
-                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                  <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
-                </marker>
-              </defs>
-            </svg>
+            <img class="visual-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTepLqwICtA7-dE9BeOruguVhdMpWZvY74DVQ&s" alt="Imagen de metodología" />
           </div>
+        </div>
+        <div class="image-slot-grid mt-6">
+          <div class="image-slot"><img src="https://img.freepik.com/vector-gratis/coleccion-pegatinas-productividad-doodle_23-2151295124.jpg?semt=ais_hybrid&w=740&q=80" alt=""></div>
+          <div class="image-slot"><img src="https://img.freepik.com/vector-premium/estudiantes-aprendizaje-colaborativo-discuten-conectarse-aprender-juntos_1305385-42708.jpg?semt=ais_hybrid&w=740&q=80" alt=""></div>
+          <div class="image-slot"><img src="https://definicion.de/wp-content/uploads/2008/04/metodologia.png" alt=""></div>
         </div>
       </div>
     </section>
@@ -560,41 +619,7 @@
         <h2 class="text-3xl font-extrabold text-primario mb-8 border-b-4 border-secundario pb-2 sport-margin">7. Conclusión 🧠</h2>
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div class="lg:col-span-1 flex items-center justify-center">
-            <svg class="sport-visual" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Estudiantes felices en círculo -->
-              <circle cx="100" cy="100" r="70" fill="#10B981" opacity="0.1" stroke="#10B981" stroke-width="2"/>
-              
-              <!-- Estudiante 1 -->
-              <g transform="translate(100,60)">
-                <circle cx="0" cy="0" r="12" fill="#3B82F6"/>
-                <rect x="-6" y="12" width="12" height="20" rx="6" fill="#3B82F6"/>
-                <circle cx="-3" cy="-3" r="2" fill="white"/>
-                <circle cx="3" cy="-3" r="2" fill="white"/>
-                <path d="M-4 2 Q0 6 4 2" stroke="white" stroke-width="1" fill="none"/>
-              </g>
-              
-              <!-- Estudiante 2 -->
-              <g transform="translate(140,100)">
-                <circle cx="0" cy="0" r="12" fill="#EF4444"/>
-                <rect x="-6" y="12" width="12" height="20" rx="6" fill="#EF4444"/>
-                <circle cx="-3" cy="-3" r="2" fill="white"/>
-                <circle cx="3" cy="-3" r="2" fill="white"/>
-                <path d="M-4 2 Q0 6 4 2" stroke="white" stroke-width="1" fill="none"/>
-              </g>
-              
-              <!-- Estudiante 3 -->
-              <g transform="translate(60,100)">
-                <circle cx="0" cy="0" r="12" fill="#F59E0B"/>
-                <rect x="-6" y="12" width="12" height="20" rx="6" fill="#F59E0B"/>
-                <circle cx="-3" cy="-3" r="2" fill="white"/>
-                <circle cx="3" cy="-3" r="2" fill="white"/>
-                <path d="M-4 2 Q0 6 4 2" stroke="white" stroke-width="1" fill="none"/>
-              </g>
-              
-              <!-- Pelota en el centro -->
-              <circle cx="100" cy="100" r="8" fill="#10B981"/>
-              <path d="M95 100 Q100 96 105 100 Q100 104 95 100" fill="#059669"/>
-            </svg>
+            <img class="visual-image" src="https://img.freepik.com/vector-gratis/apreton-manos-hombres-negocios-bombilla-grande-engranajes-giratorios-idea-negocio-lanzador-negocios-desarrollo-concepto-plan-negocios-sobre-fondo-blanco_335657-1733.jpg?semt=ais_hybrid&w=740&q=80" alt="Imagen de conclusión" />
           </div>
           <div class="lg:col-span-3 bg-white p-8 rounded-2xl shadow-xl section-box">
             <p class="text-lg leading-relaxed">
@@ -602,67 +627,25 @@
             </p>
           </div>
         </div>
+        <div class="image-slot-grid mt-6">
+          <div class="image-slot"><img src="https://img.freepik.com/free-vector/innovation-concept-illustration_114360-5768.jpg?semt=ais_hybrid&w=740" alt=""></div>
+          <div class="image-slot"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuIYi0Ad99tMCq_qymL-qfUb42zLZFc3avcdAEXWoJQNCUghLrSC7ygKI25WPr0LpdP9o&usqp=CAU" alt=""></div>
+          <div class="image-slot"><img src="https://directivosygerentes.es/wp-content/uploads/2016/02/liderazgo-innovacion.1-681x410.jpg" alt=""></div>
+        </div>
       </div>
     </section>
 
     <!-- GRACIAS -->
     <section id="gracias" class="bg-primario text-white text-center flex flex-col justify-center sport-bg-pattern relative overflow-hidden">
-      <!-- Elementos deportivos de fondo -->
-      <div class="absolute inset-0 opacity-10">
-        <svg width="100%" height="100%" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Trofeos y medallas -->
-          <g transform="translate(100,100)">
-            <rect x="0" y="20" width="40" height="60" rx="20" fill="white"/>
-            <circle cx="20" cy="10" r="15" fill="white"/>
-            <rect x="15" y="80" width="10" height="20" fill="white"/>
-          </g>
-          
-          <g transform="translate(600,150)">
-            <circle cx="0" cy="0" r="25" fill="white"/>
-            <circle cx="0" cy="0" r="20" fill="none" stroke="white" stroke-width="2"/>
-            <path d="M-10 -5 L0 -15 L10 -5 L5 5 L-5 5 Z" fill="white"/>
-          </g>
-          
-          <!-- Pelotas deportivas -->
-          <circle cx="200" cy="400" r="30" fill="white"/>
-          <path d="M180 400 Q200 380 220 400 Q200 420 180 400" fill="rgba(255,255,255,0.7)"/>
-          
-          <circle cx="650" cy="450" r="25" fill="white"/>
-          <rect x="635" y="440" width="30" height="4" fill="rgba(255,255,255,0.7)"/>
-          <rect x="635" y="450" width="30" height="4" fill="rgba(255,255,255,0.7)"/>
-          <rect x="635" y="460" width="30" height="4" fill="rgba(255,255,255,0.7)"/>
-        </svg>
-      </div>
+      <!-- Imagen de fondo (reemplaza SVG decorativo) -->
+      <img src="https://www.gemeente.nu/content/uploads/sites/5/2017/12/applaus.jpg " alt="Fondo de agradecimiento" class="absolute inset-0 w-full h-full object-cover opacity-20" />
       
       <div class="container mx-auto px-6 max-w-4xl relative z-10">
         <!-- Imagen central de celebración -->
         <div class="mb-8 flex justify-center">
-          <svg class="sport-visual" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Podio de ganadores -->
-            <rect x="50" y="200" width="60" height="80" rx="10" fill="rgba(255,255,255,0.3)"/>
-            <rect x="120" y="150" width="60" height="130" rx="10" fill="rgba(255,255,255,0.4)"/>
-            <rect x="190" y="180" width="60" height="100" rx="10" fill="rgba(255,255,255,0.3)"/>
-            
-            <!-- Números del podio -->
-            <text x="80" y="245" text-anchor="middle" fill="white" font-size="24" font-weight="bold">3</text>
-            <text x="150" y="220" text-anchor="middle" fill="white" font-size="24" font-weight="bold">1</text>
-            <text x="220" y="235" text-anchor="middle" fill="white" font-size="24" font-weight="bold">2</text>
-            
-            <!-- Figuras celebrando -->
-            <g transform="translate(150,120)">
-              <circle cx="0" cy="0" r="15" fill="white"/>
-              <rect x="-8" y="15" width="16" height="25" rx="8" fill="white"/>
-              <rect x="-20" y="10" width="12" height="20" rx="6" fill="white" transform="rotate(-30)"/>
-              <rect x="8" y="10" width="12" height="20" rx="6" fill="white" transform="rotate(30)"/>
-            </g>
-            
-            <!-- Confeti -->
-            <circle cx="100" cy="80" r="3" fill="#F59E0B"/>
-            <circle cx="200" cy="90" r="3" fill="#EF4444"/>
-            <circle cx="120" cy="60" r="3" fill="#10B981"/>
-            <circle cx="180" cy="70" r="3" fill="#3B82F6"/>
-          </svg>
+          <img class="visual-image" src="https://media.istockphoto.com/id/166008744/es/vector/ni%C3%B1os-felices-en-el-mundo.jpg?s=612x612&w=0&k=20&c=8hsjOJBVj3SsmuCtLGz_1ujSnF61lj27N2X-z3bNNXw=" alt="Imagen de celebración" />
         </div>
+        
         
         <h2 class="text-5xl font-extrabold mb-6">¡Gracias por su atención! 🙌</h2>
         <p class="text-xl mb-4">"El juego es la forma más elevada de la investigación" — Albert Einstein</p>
