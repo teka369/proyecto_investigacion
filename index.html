@@ -153,12 +153,22 @@
     /* Fondo hero con imagen espectacular */
     .hero-bg {
       background: linear-gradient(135deg, rgba(59, 130, 246, 0.35) 0%, rgba(16, 185, 129, 0.25) 50%, rgba(245, 158, 11, 0.30) 100%),
-                  url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi2X0vNSe_WSGIWeab_jgLnnfLxjK5cg8xc4JqaLGMlKoClzowbaZPDxMzAZUA0ZdbTcqXGyKBBZdF3Ugy9KRm9gc5HCrmIBvSFWWp_wu6X5TbNxqlSlSuxVX5YwLuMfyOAC0RsrvClcZZk/s1600/foto-recreacion.jpg');
-      background-size: cover;
-      background-position: center;
+                  url('image.jpg');
+      /* El gradiente y la imagen cubren todo el hero y se ven grandes */
+      background-size: cover, cover;
+      background-position: center center;
+      background-repeat: no-repeat, no-repeat;
       background-attachment: fixed;
       position: relative;
       overflow: hidden;
+    }
+
+    /* El hero de inicio ocupa toda la altura de la pantalla y centra su contenido */
+    #inicio.hero-bg {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .hero-bg::before {
       content: '';
@@ -466,8 +476,8 @@
         </div>
         <!-- Más lugares para imágenes del Tema -->
         <div class="image-slot-grid mt-6">
-          <div class="image-slot"><span><img src="https://www.clinicalascondes.cl/getattachment/ae760e8a-eb41-4e74-a12f-a79a05a405bb/?image.jpg" alt=""></span></div>
-          <div class="image-slot"><span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQts3gm5ygkcNTZ0Y6gnqeFMD8uEjNJpOocLpU_lppkZSGHFulsmZS0RoLfNIfaV2Y66WU&usqp=CAU" alt=""></span></div>
+          <div class="image-slot"><span><img src="image3.jpg" alt=""></span></div>
+          <div class="image-slot"><span><img src="image2.jpg" alt=""></span></div>
           <div class="image-slot"><span><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSz6OyYYDcLNrGQHvY6hIhostrI5c7zH4-N4FtAU58MtgP-VDGLZL2ju59H_-fah9cEmS6-n7UfD-NMDNSUtAedK6wUDVNvlwpV5wTLbqnpeMRLZtADnBgOIAgGrhxt0aSlgXrNJe7ZEY/s1600/IMG_2706+%255B800x600%255D.JPG" alt=""></span></div>
         </div>
       </div>
